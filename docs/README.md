@@ -1,5 +1,4 @@
 # Tomasulo Simulator Experiment Report
-2019/6/9  [Return](https://desperadoadil.github.io/)
 
 ---
 ## Design Approach
