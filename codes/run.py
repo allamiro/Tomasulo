@@ -52,7 +52,7 @@ class Tomasulo(QWidget):
         self.inst = QTableWidget()
         self.inst.setRowCount(1000)
         self.inst.setColumnCount(4)
-        self.inst.setHorizontalHeaderLabels(["指令", "发射周期", "执行完毕", "写回结果"])
+        self.inst.setHorizontalHeaderLabels(["Instruction", "Issue Cycle", "Execution Complete", "Write Back"])
         instList = []
         for i in range(1000):
             instList.append(str(i))
@@ -68,7 +68,7 @@ class Tomasulo(QWidget):
         self.LB = QTableWidget()
         self.LB.setRowCount(3)
         self.LB.setColumnCount(7)
-        self.LB.setHorizontalHeaderLabels(["名称", "Busy", "剩余周期", "FU", "操作码", "立即数", "指令id"])
+        self.LB.setHorizontalHeaderLabels(["Name", "Busy", "Remaining Cycles", "FU", "Opcode", "Immediate", "Instruction ID"])
         self.LB.verticalHeader().setVisible(False)
         self.LB.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.LB.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
@@ -82,7 +82,7 @@ class Tomasulo(QWidget):
         self.RS = QTableWidget()
         self.RS.setRowCount(9)
         self.RS.setColumnCount(9)
-        self.RS.setHorizontalHeaderLabels(["名称", "Busy", "剩余周期", "FU", "操作码", "Vj", "Vk", "Qj", "Qk"])
+        self.RS.setHorizontalHeaderLabels(["Name", "Busy", "Remaining Cycles", "FU", "Opcode", "Vj", "Vk", "Qj", "Qk"])
         self.RS.verticalHeader().setVisible(False)
         self.RS.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.RS.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
@@ -99,7 +99,7 @@ class Tomasulo(QWidget):
         registerList = ['PC']
         registerList.extend(self.tomasulo.register.keys())
         self.register.setHorizontalHeaderLabels(registerList)
-        self.register.setVerticalHeaderLabels(["状态", "数值"])
+        self.register.setVerticalHeaderLabels(["Status", "Value"])
         self.register.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.register.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.register.setEditTriggers(QAbstractItemView.NoEditTriggers)
@@ -172,35 +172,35 @@ class Tomasulo(QWidget):
         QToolTip.setFont(QFont('SansSerif', 10))
 
     def initButton(self):
-        self.initbtn = QPushButton("输入指令", self)
-        self.initbtn.setToolTip("输入指令")
+        self.initbtn = QPushButton("Input Instruction", self)
+        self.initbtn.setToolTip("Input Instruction")
         self.initbtn.clicked.connect(self.initdialog)
 
-        self.clocklbl = QLabel("时钟周期：", self)
+        self.clocklbl = QLabel("Clock Cycle:", self)
         self.clock = QLCDNumber(self)
         self.clock.setSegmentStyle(QLCDNumber.Flat)
         self.clock.setDigitCount(5)
         self.clock.setMode(QLCDNumber.Dec)
         self.clock.display('0')
 
-        self.stepbtn = QPushButton("单步执行", self)
-        self.stepbtn.setToolTip("执行一步")
+        self.stepbtn = QPushButton("Step Execute", self)
+        self.stepbtn.setToolTip("Execute one step")
         self.stepbtn.clicked.connect(self.step)
 
-        self.stepsbtn = QPushButton("多步执行", self)
-        self.stepsbtn.setToolTip("执行输入的步数")
+        self.stepsbtn = QPushButton("Multi-Step Execute", self)
+        self.stepsbtn.setToolTip("Execute the entered number of steps")
         self.stepsbtn.clicked.connect(self.stepsdialog)
 
-        self.autobtn = QPushButton("自动运行", self)
-        self.autobtn.setToolTip("每秒运行一步，自动运行到结束")
+        self.autobtn = QPushButton("Auto Run", self)
+        self.autobtn.setToolTip("Run one step per second, auto-run to completion")
         self.autobtn.clicked.connect(self.autorun)
 
-        self.resultbtn = QPushButton("运行到结束", self)
-        self.resultbtn.setToolTip("自动运行到产生结果")
+        self.resultbtn = QPushButton("Run to Completion", self)
+        self.resultbtn.setToolTip("Auto run until result is produced")
         self.resultbtn.clicked.connect(self.getresult)
 
-        self.resetbtn = QPushButton("清除", self)
-        self.resetbtn.setToolTip("回到初始状态")
+        self.resetbtn = QPushButton("Clear", self)
+        self.resetbtn.setToolTip("Reset to initial state")
         self.resetbtn.clicked.connect(self.reset)
 
     def initData(self):
@@ -233,27 +233,27 @@ class Tomasulo(QWidget):
             name.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
             self.LB.setItem(i, 0, name)
             busy = QTableWidgetItem('YES' if LB.busy else None)
-            busy.setToolTip("保留站是否被占用")
+            busy.setToolTip("Whether the reservation station is occupied")
             busy.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
             self.LB.setItem(i, 1, busy)
             remain = QTableWidgetItem(str(LB.remain) if LB.remain is not None else None)
-            remain.setToolTip("剩余的时间周期")
+            remain.setToolTip("Remaining time cycles")
             remain.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
             self.LB.setItem(i, 2, remain)
             fu = QTableWidgetItem(LB.FU)
-            fu.setToolTip("执行该指令的功能部件名")
+            fu.setToolTip("Name of the functional unit executing the instruction")
             fu.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
             self.LB.setItem(i, 3, fu)
             op = QTableWidgetItem(LB.op)
-            op.setToolTip("指令操作码")
+            op.setToolTip("Instruction opcode")
             op.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
             self.LB.setItem(i, 4, op)
             im = QTableWidgetItem(LB.im)
-            im.setToolTip("指令立即数")
+            im.setToolTip("Instruction immediate value")
             im.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
             self.LB.setItem(i, 5, im)
             inst = QTableWidgetItem(str(LB.inst) if LB.inst is not None else None)
-            inst.setToolTip("指令的id")
+            inst.setToolTip("Instruction ID")
             inst.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
             self.LB.setItem(i, 6, inst)
             i += 1
@@ -265,19 +265,19 @@ class Tomasulo(QWidget):
             name.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
             self.RS.setItem(i, 0, name)
             busy = QTableWidgetItem('YES' if RS.busy else None)
-            busy.setToolTip("保留站是否被占用")
+            busy.setToolTip("Whether the reservation station is occupied")
             busy.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
             self.RS.setItem(i, 1, busy)
             remain = QTableWidgetItem(str(RS.remain) if RS.remain is not None else None)
-            remain.setToolTip("剩余的时间周期")
+            remain.setToolTip("Remaining time cycles")
             remain.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
             self.RS.setItem(i, 2, remain)
             fu = QTableWidgetItem(RS.FU)
-            fu.setToolTip("执行该指令的功能部件名")
+            fu.setToolTip("Name of the functional unit executing the instruction")
             fu.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
             self.RS.setItem(i, 3, fu)
             op = QTableWidgetItem(RS.op)
-            op.setToolTip("指令操作码")
+            op.setToolTip("Instruction opcode")
             op.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
             self.RS.setItem(i, 4, op)
             vj = QTableWidgetItem(str(RS.vj) if RS.vj is not None else None)
@@ -334,13 +334,13 @@ class Tomasulo(QWidget):
         self.refresh()
 
     def autorun(self):
-        if self.autobtn.text() == "自动运行":
-            self.autobtn.setText("暂停")
+        if self.autobtn.text() == "Auto Run":
+            self.autobtn.setText("Pause")
             self.buttondisable(self.initbtn, self.stepbtn, self.stepsbtn, self.resultbtn, self.resetbtn)
             self.autorunthread.auto = True
             self.autorunthread.start()
-        elif self.autobtn.text() == "暂停":
-            self.autobtn.setText("自动运行")
+        elif self.autobtn.text() == "Pause":
+            self.autobtn.setText("Auto Run")
             self.buttonenable(self.initbtn, self.stepbtn, self.stepsbtn, self.resultbtn, self.resetbtn)
             self.autostop.emit()
 
@@ -360,18 +360,18 @@ class Tomasulo(QWidget):
         self.initUI()
         self.clock.display(self.tomasulo.clock)
         if self.tomasulo.end():
-            if self.autobtn.text() == "暂停":
-                self.autobtn.setText("自动运行")
+            if self.autobtn.text() == "Pause":
+                self.autobtn.setText("Auto Run")
             self.buttondisable(self.initbtn, self.stepbtn, self.stepsbtn, self.autobtn, self.resultbtn)
             self.buttonenable(self.resetbtn)
-            msg = QMessageBox.information(self, "执行完毕", "Tomasulo模拟器运行完毕！", QMessageBox.Ok, QMessageBox.Ok)
+            msg = QMessageBox.information(self, "Execution Complete", "Tomasulo simulator run complete!", QMessageBox.Ok, QMessageBox.Ok)
 
     def reset(self):
         self.tomasulo.reset()
         self.initUI()
         self.clock.display(0)
-        if self.autobtn.text() == "暂停":
-            self.autobtn.setText("自动运行")
+        if self.autobtn.text() == "Pause":
+            self.autobtn.setText("Auto Run")
         self.buttonenable(self.initbtn, self.stepbtn, self.stepsbtn, self.autobtn, self.resultbtn)
 
     def buttondisable(self, *args):
@@ -384,13 +384,13 @@ class Tomasulo(QWidget):
 
     def stepsdialog(self):
         dialog = QDialog()
-        dialog.setWindowTitle("请输入执行步数")
+        dialog.setWindowTitle("Enter the number of steps to execute")
         dialog.setWindowModality(Qt.ApplicationModal)
         line = QLineEdit(dialog)
         line.setAlignment(Qt.AlignLeft)
         line.setValidator(QIntValidator())
         line.setText('1')
-        btn = QPushButton("确定", dialog)
+        btn = QPushButton("OK", dialog)
 
         def btnclicked():
             self.steps(int(line.text()))
@@ -405,14 +405,14 @@ class Tomasulo(QWidget):
 
     def initdialog(self):
         dialog = QDialog()
-        dialog.setWindowTitle("请输入指令")
+        dialog.setWindowTitle("Input Instructions")
         dialog.setWindowModality(Qt.ApplicationModal)
         text = QTextEdit(dialog)
-        filebtn = QPushButton("从文件导入", dialog)
-        btn = QPushButton("确定", dialog)
+        filebtn = QPushButton("Import from file", dialog)
+        btn = QPushButton("OK", dialog)
 
         def showfiledialog():
-            fname = QFileDialog.getOpenFileName(self, "打开文件")
+            fname = QFileDialog.getOpenFileName(self, "Open File")
             if fname[0]:
                 with open(fname[0], 'r') as f:
                     data = f.read()
@@ -445,7 +445,7 @@ class Tomasulo(QWidget):
         dialog.exec_()
 
     def closeEvent(self, event):
-        reply = QMessageBox.question(self, '退出', "是否退出模拟器?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        reply = QMessageBox.question(self, 'Exit', "Do you want to exit the simulator?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
             event.accept()
         else:
