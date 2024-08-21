@@ -1,4 +1,4 @@
-# Tomasulo Simulator Experiment Report
+# Tomasulo Simulator Experiment Report - English version
 
 ---
 ## Design Approach
